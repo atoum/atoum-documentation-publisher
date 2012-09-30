@@ -26,6 +26,9 @@
             chdir(EASYBOOK_DOC_PATH);
             command('git clone http://github.com/marmotz/atoum-s-documentation');
         }
+        else {
+            command('git pull');
+        }
 
         chdir(EASYBOOK_PATH);
         command(PHP_BINARY . ' book publish atoum-s-documentation/fr print');
