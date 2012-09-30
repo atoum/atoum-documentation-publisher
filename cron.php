@@ -1,7 +1,7 @@
 <?php
     define('FLAG_FILE',         __DIR__ . '/flag');
     define('EASYBOOK_PATH',     __DIR__ . '/easybook');
-    define('EASYBOOK_DOC_PATH', EASYBOOK_PATH . '/doc');
+    define('ATOUM_DOC_PATH',    EASYBOOK_PATH . '/doc/atoum-s-documentation');
 
     function writeln($txt = '') {
         echo "$txt\n";
@@ -23,10 +23,10 @@
             command('curl -s http://getcomposer.org/installer | ' . PHP_BINARY);
             command(PHP_BINARY . ' composer.phar install');
 
-            chdir(EASYBOOK_DOC_PATH);
-            command('git clone http://github.com/marmotz/atoum-s-documentation');
+            command('git clone http://github.com/marmotz/atoum-s-documentation ' . ATOUM_DOC_PATH);
         }
         else {
+            chdir(ATOUM_DOC_PATH);
             command('git pull');
         }
 
