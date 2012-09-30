@@ -4,7 +4,7 @@
     define('EASYBOOK_DOC_PATH', EASYBOOK_PATH . '/doc');
 
     function writeln($txt = '') {
-        echo "$txt<br />\n";
+        echo "$txt\n";
     }
 
     function command($command) {
@@ -20,17 +20,17 @@
             command('git clone http://github.com/javiereguiluz/easybook');
 
             chdir(EASYBOOK_PATH);
-            command('curl -s http://getcomposer.org/installer | php');
-            command('php composer.phar install');
+            command('curl -s http://getcomposer.org/installer | ' . PHP_BINARY);
+            command(PHP_BINARY . ' composer.phar install');
 
             chdir(EASYBOOK_DOC_PATH);
             command('git clone http://github.com/marmotz/atoum-s-documentation');
         }
 
         chdir(EASYBOOK_PATH);
-        command('php book publish atoum-s-documentation/fr print');
-        command('php book publish atoum-s-documentation/fr web');
-        command('php book publish atoum-s-documentation/fr website');
+        command(PHP_BINARY . ' book publish atoum-s-documentation/fr print');
+        command(PHP_BINARY . ' book publish atoum-s-documentation/fr web');
+        command(PHP_BINARY . ' book publish atoum-s-documentation/fr website');
 
         file_put_contents(FLAG_FILE, '');
     }
