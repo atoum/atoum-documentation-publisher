@@ -6,7 +6,7 @@
     }
 
     if(!file_exists(FLAG_FILE) || !is_writable(FLAG_FILE)) {
-        writeln(FLAG_FILE . 'does not exists');
+        writeln(FLAG_FILE . ' does not exists');
         writeln('You must create this file and give it write access');
         writeln();
         writeln('touch ' . FLAG_FILE);
