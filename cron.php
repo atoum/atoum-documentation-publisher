@@ -4,6 +4,10 @@
     define('EASYBOOK_PATH',     __DIR__ . '/easybook');
     define('ATOUM_DOC_PATH',    EASYBOOK_PATH . '/doc/atoum-s-documentation');
 
+    if(!defined('PHP_BINARY')) {
+        define('PHP_BINARY', $_SERVER['_']);
+    }
+
     function writeln($txt = '') {
         echo "$txt\n";
     }
