@@ -13,9 +13,19 @@
         writeln('chmod 0777 ' . FLAG_FILE);
     }
     else {
-        $payload = json_decode($_POST['payload'], true);
+        if(isset($_POST['payload'])) {
+            $payload = json_decode($_POST['payload'], true);
 
-        file_put_contents(FLAG_FILE, $payload['repository']['url']);
-        
-        echo 'Generation of the documentation requested.';
+            if(isset($payload['repository']['url'])) {
+                file_put_contents(FLAG_FILE, $payload['repository']['url']);
+                
+                die('Generation of the documentation requested.');
+            }
+            else {
+                die('Generation of the documentation NOT requested: no repository url.');
+            }
+        }
+        else {
+            die('Generation of the documentation NOT requested: no payload data.');
+        }
     }
