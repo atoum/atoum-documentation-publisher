@@ -15,22 +15,25 @@
 
     chdir(__DIR__);
     
-    if(file_exists(FLAG_FILE) && file_get_contents(FLAG_FILE) === 'GO !') {
+    if(file_exists(FLAG_FILE) && ($repoUrl = file_get_contents(FLAG_FILE)) !== '') {
         if(!file_exists(EASYBOOK_PATH)) {
-            command('git clone http://github.com/javiereguiluz/easybook');
-
-            chdir(EASYBOOK_PATH);
             command('curl -s http://getcomposer.org/installer | ' . PHP_BINARY);
-            command(PHP_BINARY . ' composer.phar install');
-
-            command('git clone http://github.com/marmotz/atoum-s-documentation ' . ATOUM_DOC_PATH);
+            command(PHP_BINARY . ' composer.phar -n create-project easybook/easybook');
+            chdir(EASYBOOK_PATH);
         }
         else {
-            chdir(ATOUM_DOC_PATH);
-            command('git pull');
+            command(PHP_BINARY . ' composer.phar self-update');
+            chdir(EASYBOOK_PATH);
+            command(PHP_BINARY . ' ../composer.phar update');
         }
 
-        chdir(EASYBOOK_PATH);
+        command('rm -rf ' . ATOUM_DOC_PATH);
+        command("git clone $repoUrl " . ATOUM_DOC_PATH);
+
+        command(PHP_BINARY . ' book publish atoum-s-documentation/en print');
+        command(PHP_BINARY . ' book publish atoum-s-documentation/en web');
+        command(PHP_BINARY . ' book publish atoum-s-documentation/en website');
+
         command(PHP_BINARY . ' book publish atoum-s-documentation/fr print');
         command(PHP_BINARY . ' book publish atoum-s-documentation/fr web');
         command(PHP_BINARY . ' book publish atoum-s-documentation/fr website');

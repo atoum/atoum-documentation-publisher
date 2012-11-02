@@ -13,5 +13,9 @@
         writeln('chmod 0777 ' . FLAG_FILE);
     }
     else {
-        file_put_contents(FLAG_FILE, 'GO !');
+        $payload = json_decode($_POST['payload'], true);
+
+        file_put_contents(FLAG_FILE, $payload['repository']['url']);
+        
+        echo 'Generation of the documentation requested.';
     }
