@@ -15,14 +15,14 @@ Vous devez l'installer sur un serveur:
 
 ```shell
 cd /path/to/clone/this/repo
-git clone http://github.com/marmotz/atoum-s-documentation-publisher
+git clone http://github.com/atoum/atoum-documentation-publisher
 ```
 
 
 ### Étape 2 : Créez le fichier d'échange
 
 ```shell
-cd atoum-s-documentation-publisher
+cd atoum-documentation-publisher
 touch flag
 chmod 0777 flag
 ```
@@ -32,7 +32,7 @@ chmod 0777 flag
 
 Lancez un navigateur et appelez l'url qui vous permet d'accéder au code d'*atoum's documentation publisher*.
 
-Par exemple: http://monhost.com/atoum-s-documentation-publisher/
+Par exemple: http://monhost.com/atoum-documentation-publisher/
 
 Si tout se passe bien, vous obtenez un message qui vous indique que la génération de la documentation a été demandée.
 
@@ -42,7 +42,7 @@ Si tout se passe bien, vous obtenez un message qui vous indique que la générat
 Créez le cron suivant :
 
 ```shell
-*/10 * * * * /usr/bin/php /path/to/atoum-s-documentation-publisher/cron.php 2>&1 > /dev/null
+*/10 * * * * /usr/bin/php /path/to/atoum-documentation-publisher/cron.php 2>&1 > /dev/null
 ```
 
 
@@ -59,5 +59,5 @@ Ouvrez le fichier flag créé à l'étape 2, vous devriez voir l'url de votre re
 ## Où sont mes docs ?
 
 Elles se trouvent dans :
-* /path/to/atoum-s-documentation-publisher/easybook/doc/atoum-s-documentation/en/Output/
-* /path/to/atoum-s-documentation-publisher/easybook/doc/atoum-s-documentation/fr/Output/
+* /path/to/atoum-documentation-publisher/easybook/doc/atoum-documentation/en/Output/
+* /path/to/atoum-documentation-publisher/easybook/doc/atoum-documentation/fr/Output/
