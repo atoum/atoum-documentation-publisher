@@ -2,7 +2,7 @@
     define('FLAG_FILE',         __DIR__ . '/flag');
     define('COMPOSER_PATH',     __DIR__ . '/composer.phar');
     define('EASYBOOK_PATH',     __DIR__ . '/easybook');
-    define('ATOUM_DOC_PATH',    EASYBOOK_PATH . '/doc/atoum-s-documentation');
+    define('ATOUM_DOC_PATH',    EASYBOOK_PATH . '/doc/atoum-documentation');
 
     if(!defined('PHP_BINARY')) {
         define('PHP_BINARY', $_SERVER['_']);
@@ -73,7 +73,7 @@
         foreach($lang as $langKey => $langSwitch) {
             foreach($pub as $pubKey => $pubSwitch) {
                 if($langSwitch && $pubSwitch) {
-                    command(PHP_BINARY . ' book publish atoum-s-documentation/' . $langKey . ' ' . $pubKey);
+                    command(PHP_BINARY . ' book publish atoum-documentation/' . $langKey . ' ' . $pubKey);
                 }
             }
         }
