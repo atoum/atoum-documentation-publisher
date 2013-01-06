@@ -6,7 +6,7 @@
     define('DOC_OUTPUT',        $argv[1]);
 
     if(!defined('PHP_BINARY')) {
-        define('PHP_BINARY', $_SERVER['_']);
+        define('PHP_BINARY', exec("which php"));
     }
 
     function writeln($txt = '') {
