@@ -1,8 +1,9 @@
 <?php
     define('FLAG_FILE',         __DIR__ . '/flag');
     define('COMPOSER_PATH',     __DIR__ . '/composer.phar');
-    define('EASYBOOK_PATH',     __DIR__ . '/easybook');
-    define('ATOUM_DOC_PATH',    EASYBOOK_PATH . '/doc/atoum-documentation');
+    define('SIA_PATH',          __DIR__ . '/sia');
+    define('DOC_SOURCE',        __DIR__ . '/sources');
+    define('DOC_OUTPUT',        $argv[1]);
 
     if(!defined('PHP_BINARY')) {
         define('PHP_BINARY', $_SERVER['_']);
@@ -20,15 +21,8 @@
 
     chdir(__DIR__);
     if(
-        (
-            isset($argv[1]) &&
-            !preg_match('/^\-/', $argv[1]) &&
-            ($repoUrl = $argv[1]) !== ''
-        ) ||
-        (
-            file_exists(FLAG_FILE) &&
-            ($repoUrl = trim(file_get_contents(FLAG_FILE))) !== ''
-        )
+        file_exists(FLAG_FILE) &&
+        ($repoUrl = trim(file_get_contents(FLAG_FILE))) !== ''
     ) {
         // get composer
         if(!file_exists(COMPOSER_PATH)) {
@@ -38,45 +32,39 @@
             command(PHP_BINARY . ' composer.phar self-update');
         }
 
-
-        // get easybook
-        if(!file_exists(EASYBOOK_PATH)) {
-            command(PHP_BINARY . ' composer.phar -n create-project easybook/easybook');
+        // get sia
+        if(!file_exists(SIA_PATH)) {
+            command('git clone https://github.com/marmotz/sia.git');
+            chdir(SIA_PATH);
+            command(PHP_BINARY . ' ../composer.phar install');
         }
         else {
-            chdir(EASYBOOK_PATH);
+            chdir(SIA_PATH);
+            command('git pull');
             command(PHP_BINARY . ' ../composer.phar update');
         }
 
-
         // get documentation source
-        command('rm -rf ' . ATOUM_DOC_PATH);
-        command("git clone $repoUrl " . ATOUM_DOC_PATH);
+        command('rm -rf ' . DOC_SOURCE);
+        command("git clone $repoUrl " . DOC_SOURCE);
 
-        if(isset($argv[2]) && !preg_match('/^\-/', $argv[2])) {
-            chdir(ATOUM_DOC_PATH);
-            command('git checkout ' . escapeshellarg($argv[2]));
+        // create ouput directory
+        if(!file_exists(DOC_OUTPUT)) {
+            mkdir(DOC_OUTPUT);
+        }
+
+        if(!file_exists(DOC_OUTPUT . '/fr')) {
+            mkdir(DOC_OUTPUT . '/fr');
+        }
+
+        if(!file_exists(DOC_OUTPUT . '/en')) {
+            mkdir(DOC_OUTPUT . '/en');
         }
 
         // generate documentation
-        chdir(EASYBOOK_PATH);
-
-        $langs = array('--fr', '--en');
-        $lang['fr'] = count(array_intersect($langs, $argv)) ? in_array('--fr', $argv) : true;
-        $lang['en'] = count(array_intersect($langs, $argv)) ? in_array('--en', $argv) : true;
-
-        $pubs = array('--print', '--web', '--website');
-        $pub['print']   = count(array_intersect($pubs, $argv)) ? in_array('--print', $argv) : true;
-        $pub['web']     = count(array_intersect($pubs, $argv)) ? in_array('--web', $argv) : true;
-        $pub['website'] = count(array_intersect($pubs, $argv)) ? in_array('--website', $argv) : true;
-
-        foreach($lang as $langKey => $langSwitch) {
-            foreach($pub as $pubKey => $pubSwitch) {
-                if($langSwitch && $pubSwitch) {
-                    command(PHP_BINARY . ' book publish atoum-documentation/' . $langKey . ' ' . $pubKey);
-                }
-            }
-        }
+        chdir(SIA_PATH);
+        command(PHP_BINARY . ' bin/sia -i ' . DOC_SOURCE . '/fr/Contents/ -o ' . DOC_OUTPUT . '/fr -t initializr');
+        command(PHP_BINARY . ' bin/sia -i ' . DOC_SOURCE . '/en/Contents/ -o ' . DOC_OUTPUT . '/en -t initializr');
 
         // reinit flag file
         file_put_contents(FLAG_FILE, '');
