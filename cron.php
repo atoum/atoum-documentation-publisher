@@ -6,8 +6,11 @@
     define('DOC_OUTPUT',        $argv[1]);
 
     if(!defined('PHP_BINARY')) {
-        define('PHP_BINARY', exec("which php"));
+        define('PHP_BINARY', '/usr/local/bin/php');
     }
+
+    define('GIT_BINARY',  '/usr/local/bin/git');
+    define('CURL_BINARY', '/usr/local/bin/curl');
 
     function writeln($txt = '') {
         echo "$txt\n";
@@ -26,7 +29,7 @@
     ) {
         // get composer
         if(!file_exists(COMPOSER_PATH)) {
-            command('curl -s http://getcomposer.org/installer | ' . PHP_BINARY);
+            command(CURL_BINARY . ' -s http://getcomposer.org/installer | ' . PHP_BINARY);
         }
         else {
             command(PHP_BINARY . ' composer.phar self-update');
@@ -34,19 +37,19 @@
 
         // get sia
         if(!file_exists(SIA_PATH)) {
-            command('git clone https://github.com/marmotz/sia.git');
+            command(GIT_BINARY . ' clone https://github.com/marmotz/sia.git');
             chdir(SIA_PATH);
             command(PHP_BINARY . ' ../composer.phar install');
         }
         else {
             chdir(SIA_PATH);
-            command('git pull');
+            command(GIT_BINARY . ' pull');
             command(PHP_BINARY . ' ../composer.phar update');
         }
 
         // get documentation source
         command('rm -rf ' . DOC_SOURCE);
-        command("git clone $repoUrl " . DOC_SOURCE);
+        command(GIT_BINARY . " clone $repoUrl " . DOC_SOURCE);
 
         // create ouput directory
         if(!file_exists(DOC_OUTPUT)) {
