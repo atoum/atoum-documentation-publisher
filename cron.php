@@ -66,8 +66,8 @@
 
         // generate documentation
         chdir(SIA_PATH);
-        command(PHP_BINARY . ' bin/sia -i ' . DOC_SOURCE . '/fr/Contents/ -o ' . DOC_OUTPUT . '/fr -t initializr');
-        command(PHP_BINARY . ' bin/sia -i ' . DOC_SOURCE . '/en/Contents/ -o ' . DOC_OUTPUT . '/en -t initializr');
+        command(PHP_BINARY . ' bin/sia -i ' . DOC_SOURCE . '/fr/Contents/ -o ' . DOC_OUTPUT . '/fr -t atoum');
+        command(PHP_BINARY . ' bin/sia -i ' . DOC_SOURCE . '/en/Contents/ -o ' . DOC_OUTPUT . '/en -t atoum');
 
         // reinit flag file
         file_put_contents(FLAG_FILE, '');
