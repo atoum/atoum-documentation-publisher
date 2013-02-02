@@ -11,7 +11,7 @@
     }
 
     function command($command) {
-        $command = PATH . '; ' . $command;
+        $command = 'PATH=' . PATH . '; ' . $command;
         writeln("$ $command");
         passthru($command);
         writeln();
